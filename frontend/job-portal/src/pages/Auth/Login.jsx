@@ -11,6 +11,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { span } from 'framer-motion/client';
+import { validateEmail } from '../../utils/helper';
 
 
 const Login = () => {
@@ -29,13 +30,7 @@ const Login = () => {
   });
 
 
-  // Validation Function
-  const validateEmail = (email) => {
-    if (!email.trim()) return 'Email is required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Please enter a valid email address'
-    return '';
-  };
+  
 
   const validatePassword = (password) => {
     if (!password) return 'Password is required';
