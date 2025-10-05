@@ -1,0 +1,1 @@
+- [x] Fix the analytics controller error by changing res.user._id to req.user._id and correcting new Date(now) to new Date()
