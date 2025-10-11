@@ -11,11 +11,14 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { span } from 'framer-motion/client';
-import { validateEmail } from '../../utils/helper';
+import { validateEmail } from '../utils/helper';
+import axiosInstance from '../utils/axiosInstance';
+import { useAuth } from '../../context/AuthContext';
+import { API_PATHS } from '../utils/apiPaths';
 
 
 const Login = () => {
-
+  const {Login} = useAuth()
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -29,14 +32,10 @@ const Login = () => {
     success: false
   });
 
-
-  
-
   const validatePassword = (password) => {
     if (!password) return 'Password is required';
     return '';
   };
-
 
   // Handle Input Changes
   const handleInputChange = (e) => {
@@ -76,6 +75,40 @@ const Login = () => {
     setFormState(prev => ({ ...prev, loading: true }));
     try {
       //Login api integration
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN,{
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
+
+      setFormState(prev => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {}
+      }));
+
+      const {token, role}=response.data;
+
+      if(token){
+        Login(response.data, token);
+
+        // Redirect based on role
+        setTimeout(() => {
+          window.location.href = 
+            role === "employer"
+              ? "/employer-dashboard"
+              : "/find-jobs";
+        }, 2000);
+      }
+
+      // Redirect based on user role
+      setTimeout(() => {
+        const redirectPath = User.role === 'employer'
+          ? '/employer-dashboard'
+          : '/find-jobs'
+        window.location.href = redirectPath;
+      }, 1500);
 
     } catch (error) {
       setFormState(prev => ({

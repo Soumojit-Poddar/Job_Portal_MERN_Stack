@@ -18,11 +18,11 @@ import ManageJobs from "./pages/Employer/ManageJobs"
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
 import ProtectedRoute from "./routes/ProtectedRoutes";
-
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
-    <div className=''>
+    <AuthProvider>
 
       <Router>
         <Routes>
@@ -60,7 +60,7 @@ const App = () => {
         }}
       />
       
-    </div>
+    </AuthProvider>
   )
 }
 
